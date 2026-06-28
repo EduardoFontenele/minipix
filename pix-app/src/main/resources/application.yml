@@ -1,0 +1,3 @@
+pix:
+  security:
+    jwt-secret: minipix-secret-key-for-local-dev
