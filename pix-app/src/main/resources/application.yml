@@ -1,3 +1,15 @@
+springdoc:
+  swagger-ui:
+    url: /openapi.yaml
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 pix:
   security:
     jwt-secret: minipix-secret-key-for-local-dev
+  idempotency:
+    ttl-hours: 24

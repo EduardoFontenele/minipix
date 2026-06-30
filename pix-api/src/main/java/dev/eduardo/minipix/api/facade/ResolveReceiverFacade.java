@@ -1,21 +1,18 @@
 package dev.eduardo.minipix.api.facade;
 
-import dev.eduardo.minipix.api.dto.PixResolveInput;
+import dev.eduardo.minipix.api.dto.ResolveReceiverInputWrapper;
 import dev.eduardo.minipix.api.exception.ExternalServiceException;
 import dev.eduardo.minipix.api.exception.TransactionNotAllowedException;
+import dev.eduardo.minipix.api.security.JwtTokenParser;
 import dev.eduardo.minipix.api.service.AccountLimitsService;
 import dev.eduardo.minipix.api.service.AntiFraudService;
 import dev.eduardo.minipix.api.service.DictService;
 import dev.eduardo.minipix.api.util.DocumentUtils;
 import dev.eduardo.minipix.common.dto.PixResolveResponse;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executors;
 
@@ -27,17 +24,15 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ReceiverResolutionFacade {
+public class ResolveReceiverFacade {
 
-    @Value("${pix.security.jwt-secret}")
-    private String jwtSecret;
-
+    private final JwtTokenParser jwtTokenParser;
     private final AccountLimitsService accountLimitsService;
     private final AntiFraudService antiFraudService;
     private final DictService dictService;
 
-    public PixResolveResponse getReceiverInformation(PixResolveInput input) {
-        var senderDocument = extractDocument(input.authorization());
+    public PixResolveResponse execute(ResolveReceiverInputWrapper input) {
+        var senderDocument = jwtTokenParser.extractDocument(input.authorization());
 
         try(var executor = Executors.newVirtualThreadPerTaskExecutor()) {
             var sufficientLimitFuture = supplyAsync(
@@ -80,16 +75,5 @@ public class ReceiverResolutionFacade {
             if (isNull(dictInformation)) throw new ExternalServiceException(new RuntimeException("DICT returned no data"));
             return dictInformation;
         }
-    }
-
-    private String extractDocument(String authorizationHeader) {
-        var token = authorizationHeader.replace("Bearer ", "");
-        var key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
     }
 }

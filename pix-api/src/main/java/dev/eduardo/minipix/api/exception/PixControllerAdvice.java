@@ -17,7 +17,7 @@ public class PixControllerAdvice {
 
     @ExceptionHandler(TransactionNotAllowedException.class)
     public ProblemDetail handleTransactionNotAllowedException(TransactionNotAllowedException ex) {
-        var problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
+        var problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage());
         problem.setTitle("Transaction Not Allowed");
         return problem;
     }

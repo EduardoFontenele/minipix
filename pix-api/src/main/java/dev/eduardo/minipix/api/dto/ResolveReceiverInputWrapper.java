@@ -1,6 +1,6 @@
 package dev.eduardo.minipix.api.dto;
 
-public record PixResolveInput(
+public record ResolveReceiverInputWrapper(
         String authorization,
         String correlationId,
         String idempotencyKey,
