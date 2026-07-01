@@ -1,6 +1,10 @@
+plugins {
+    `java-library`
+    id("com.github.davidmc24.gradle.plugin.avro")
+}
+
 description = "Modelos e DTOs compartilhados entre os módulos do mini-pix"
 
 dependencies {
-    // Modelos, DTOs e interfaces compartilhadas
-    // Sem dependências de Kafka — este módulo é agnóstico de infraestrutura
+    api("org.apache.avro:avro:1.11.4")
 }

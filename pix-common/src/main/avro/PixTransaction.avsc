@@ -1,0 +1,67 @@
+{
+  "type": "record",
+  "name": "PixTransaction",
+  "namespace": "dev.eduardo.minipix",
+  "fields": [
+    {
+      "name": "endToEndId",
+      "type": "string"
+    },
+    {
+      "name": "initiationTimestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
+    {
+      "name": "amount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 18,
+        "scale": 2
+      }
+    },
+    {
+      "name": "senderDocument",
+      "type": "string"
+    },
+    {
+      "name": "receiverKey",
+      "type": "string"
+    },
+    {
+      "name": "receiverName",
+      "type": "string"
+    },
+    {
+      "name": "receiverDocument",
+      "type": "string"
+    },
+    {
+      "name": "receiverIspb",
+      "type": "string"
+    },
+    {
+      "name": "receiverAccountType",
+      "type": {
+        "type": "enum",
+        "name": "AccountType",
+        "symbols": [
+          "CACC",
+          "SVGS",
+          "TRAN"
+        ]
+      }
+    },
+    {
+      "name": "description",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}

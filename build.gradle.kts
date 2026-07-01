@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") apply false
     id("io.spring.dependency-management") apply false
+    id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1" apply false
 }
 
 allprojects {
@@ -27,6 +28,7 @@ subprojects {
 
     repositories {
         mavenCentral()
+        maven { url = uri("https://packages.confluent.io/maven/") }
     }
 
     configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {

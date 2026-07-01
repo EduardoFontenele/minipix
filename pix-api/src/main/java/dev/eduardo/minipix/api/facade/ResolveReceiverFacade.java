@@ -60,7 +60,7 @@ public class ResolveReceiverFacade {
             var hasSufficientLimit = sufficientLimitFuture.join();
             var hasFraudRisk = fraudRiskFuture.join();
 
-            log.info("resolve correlationId={} receiverKey={} senderDocument={} hasFraudRisk={} hasSufficientLimits={} elapsedMs={}",
+            log.info("resolve correlationId={} receiverKey={} senderDocument={} hasFraudRisk={} hasSufficientLimits={} elapsedMs={}ms",
                     input.correlationId(),
                     input.request().receiverKey(),
                     DocumentUtils.maskCpf(senderDocument),
